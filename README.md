@@ -13,8 +13,6 @@ Build backend to simulate a conversation between AI agents in **Spanish** and **
 ## Who is this for?
 - For us, for our friends, for our parents, for Aryan's girlfriend's mom.
 
----
-
 
 ---
 
