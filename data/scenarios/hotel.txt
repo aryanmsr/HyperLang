@@ -1,0 +1,9 @@
+A guest arrives at a hotel and interacts with the receptionist to check in.
+The receptionist welcomes the guest and confirms their reservation.
+They provide details about the room, including its type and amenities (a suite with a sea view and a double bed).
+The guest asks if there are any discounts for frequent members, but the receptionist explains that no discounts are available.
+However, they offer a late check-out as a courtesy.
+
+The receptionist then hands over the room key and asks about the guest's luggage.
+Upon confirming that the guest has two large suitcases, they call a porter to assist with carrying the luggage to the room.
+The conversation concludes with the receptionist offering assistance if needed and warmly welcoming the guest to enjoy their stay.
