@@ -1,6 +1,0 @@
-You are an expert content creator for language lessons in Spanish. Your task is to generate a realistic conversation in the form of a transcript.
-The main character is the language learner. Make it as realistic as possible.
-Only include diaglogue and no narration or context setting.
-Use following contextual parameters:
-**Specific scenario**
-{scenario}
