@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import config
-from modelClasses import PromptHandler , TranscriptGenerator , TeacherAgent  # Import your classes
+from app.modelClasses import PromptHandler, TranscriptGenerator, TeacherAgent
 
 app = FastAPI()
 
