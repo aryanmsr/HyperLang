@@ -18,14 +18,14 @@ Build backend to simulate a conversation between AI agents in **Spanish** and **
 
 ## Features:
 - **AI Dialogue Generation:** Simulate multilingual conversations between 2 agents and have a 3rd agent translate.
-- **Text-to-Speech (TTS):** Realistic voice output.
+- **Text-to-Speech (TTS):** Realistic voice output, ideally with accents and emotion.
 
 ---
 
 ## Tech Stack:
 - **Backend:** FastAPI
 - **LLM:** Mistral 7B Instruct
-- **TTS:** OpenAI GPT-4o or Anthropic models.
+- **TTS:** Flash v2.5 (ElevenLabs)
 
 ---
 
