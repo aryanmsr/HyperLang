@@ -1,3 +1,30 @@
-PROMPT_TEMPLATE_PATH = './prompts/system_prompt_template.txt'
-TEACHER_TEMPLATE_PATH = './prompts/teacher_prompt_template.txt'
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# Prompt templates
+SYSTEM_PROMPT_TEMPLATE_PATH = "./app/prompts/system_prompt_template.txt"
+TEACHER_PROMPT_TEMPLATE_PATH = "./app/prompts/teacher_prompt_template.txt"
+
+# Example scenario file (e.g., cafe conversation)
+SCENARIO_CAFE_PATH = "./app/prompts/scenarios/cafe.txt"
+
+# LLM configuration
 MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.3"
+
+# ElevenLabs configuration for TTS
+ELEVEN_API_KEY = os.getenv("ELEVEN_API_KEY")
+TTS_MODEL_ID = "eleven_flash_v2_5"
+
+# Audio file settings
+GENERATED_OUTPUT_DIR = "./data/conversations"
+PAUSE_DURATION_MS = 800  
+
+# Speaker to voice mapping
+SPEAKER_VOICES = {
+    "Juan Pablo": "sdxJtmxpzgSLekrYUGIu",
+    "José": "sdxJtmxpzgSLekrYUGIu",
+    "Ana": "86V9x9hrQds83qf7zaGn",
+    "Maestro": "JBFqnCBsd6RMkjVDRZzb",
+}
