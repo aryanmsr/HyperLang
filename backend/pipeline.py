@@ -1,9 +1,9 @@
 ## NEED TO FIX. Transcript should be formatted in a very specific way in the pipeline.
 import os
 import datetime
-from app import config
-from app.modelClasses import PromptHandler, TranscriptGenerator
-from app.tts import TTSProcessor
+import config
+from backend.modelClasses import PromptHandler, TranscriptGenerator
+from backend.tts import TTSProcessor
 
 
 def load_scenario(scenario_file_path: str) -> str:
@@ -69,5 +69,5 @@ if __name__ == "__main__":
     scenario_text = load_scenario(config.SCENARIO_CAFE_PATH)
 
     output = run_pipeline(scenario_text, country_name="Colombia")
-    
+
     print("Pipeline complete:", output)

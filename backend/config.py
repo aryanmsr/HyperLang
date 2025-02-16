@@ -4,11 +4,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Prompt templates
-SYSTEM_PROMPT_TEMPLATE_PATH = "./app/prompts/system_prompt_template.txt"
-TEACHER_PROMPT_TEMPLATE_PATH = "./app/prompts/teacher_prompt_template.txt"
+SYSTEM_PROMPT_TEMPLATE_PATH = "./backend/prompts/system_prompt_template.txt"
+TEACHER_PROMPT_TEMPLATE_PATH = "./backend/prompts/teacher_prompt_template.txt"
 
 # Example scenario file (e.g., cafe conversation)
-SCENARIO_CAFE_PATH = "./app/prompts/scenarios/cafe.txt"
+SCENARIO_CAFE_PATH = "./backend/prompts/scenarios/cafe.txt"
 
 # LLM configuration
 MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.3"
@@ -19,7 +19,7 @@ TTS_MODEL_ID = "eleven_flash_v2_5"
 
 # Audio file settings
 GENERATED_OUTPUT_DIR = "./data/conversations"
-PAUSE_DURATION_MS = 800  
+PAUSE_DURATION_MS = 800
 
 # Speaker to voice mapping - NEED TO MAKE IT ROBUST
 SPEAKER_VOICES = {

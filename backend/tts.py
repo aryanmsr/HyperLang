@@ -3,7 +3,7 @@ import re
 from pydub import AudioSegment
 from elevenlabs import ElevenLabs, save
 from dotenv import load_dotenv
-from app import config
+from backend import config
 
 load_dotenv()
 

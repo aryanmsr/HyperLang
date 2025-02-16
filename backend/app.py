@@ -1,20 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from app import config
+from backend import config
 from modelClasses import PromptHandler, TranscriptGenerator, TeacherAgent
 from pipeline import run_pipeline
 
 app = FastAPI()
 
-# Enable CORS for frontend requests
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Next.js frontend
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 
 
 # Enable CORS for frontend requests
