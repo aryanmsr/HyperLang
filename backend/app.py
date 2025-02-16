@@ -1,10 +1,21 @@
 # app.py
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import config
-from app.modelClasses import PromptHandler, TranscriptGenerator, TeacherAgent
+from modelClasses import PromptHandler, TranscriptGenerator, TeacherAgent
 
 app = FastAPI()
+
+# Enable CORS for frontend requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Next.js frontend
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Define request and response models
 class TranscriptRequest(BaseModel):
@@ -22,6 +33,10 @@ teacher_agent = TeacherAgent(
     model_name=config.MODEL_NAME,
     temperature=0.2
 )
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World from FastAPI"}
 
 @app.post("/generate_transcript", response_model=TranscriptResponse)
 async def generate_transcript(request: TranscriptRequest):
