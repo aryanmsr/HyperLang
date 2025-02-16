@@ -21,7 +21,7 @@ TTS_MODEL_ID = "eleven_flash_v2_5"
 GENERATED_OUTPUT_DIR = "./data/conversations"
 PAUSE_DURATION_MS = 800  
 
-# Speaker to voice mapping
+# Speaker to voice mapping - NEED TO MAKE IT ROBUST
 SPEAKER_VOICES = {
     "Juan Pablo": "sdxJtmxpzgSLekrYUGIu",
     "José": "sdxJtmxpzgSLekrYUGIu",
