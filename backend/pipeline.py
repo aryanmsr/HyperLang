@@ -71,3 +71,4 @@ if __name__ == "__main__":
     output = run_pipeline(scenario_text, country_name="Colombia")
 
     print("Pipeline complete:", output)
+
