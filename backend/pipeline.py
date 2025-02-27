@@ -2,7 +2,7 @@
 import os
 import datetime
 import config
-from backend.modelClasses import PromptHandler, TranscriptGenerator
+from backend.modelClasses import PromptHandler, LLMWrapper
 from backend.tts import TTSProcessor
 
 
@@ -38,9 +38,9 @@ def run_pipeline(scenario: str, country_name: str = "Colombia") -> dict:
     transcript_file = os.path.join(conversation_dir, "transcript.txt")
 
     prompt_handler = PromptHandler(config.SYSTEM_PROMPT_TEMPLATE_PATH)
-    transcript_generator = TranscriptGenerator(config.MODEL_NAME)
-    prompt = prompt_handler.format_prompt_scenario(scenario, country_name=country_name)
-    transcript = transcript_generator.generate_transcript(prompt)
+    transcript_generator = LLMWrapper(config.MODEL_NAME)
+    prompt = prompt_handler.format_prompt(scenario, country_name=country_name)
+    transcript = transcript_generator.generate(prompt)
     print("Generated Transcript:")
     print(transcript)
 
@@ -53,7 +53,7 @@ def run_pipeline(scenario: str, country_name: str = "Colombia") -> dict:
         transcript_lines,
         speaker_voices=config.SPEAKER_VOICES,
         output_dir=conversation_dir,
-        final_audio_file=final_audio_file,
+        final_audio_file=final_audio_file
     )
 
     return {
@@ -71,3 +71,4 @@ if __name__ == "__main__":
     output = run_pipeline(scenario_text, country_name="Colombia")
 
     print("Pipeline complete:", output)
+
