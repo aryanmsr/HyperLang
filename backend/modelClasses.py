@@ -51,7 +51,7 @@ class PromptHandler:
 
 class LLMWrapper:
     """
-    A flexible wrapper around Huggingface Inference Client that generates text given any prompt.
+    A flexible wrapper around Huggingface Inference that generates text given any prompt.
     """
 
     def __init__(self, model_name: str, temperature: float = 0.7) -> None:

@@ -1,61 +1,92 @@
-## NEED TO FIX. Transcript should be formatted in a very specific way in the pipeline.
 import os
 import datetime
-import config
-from backend.modelClasses import PromptHandler, LLMWrapper
+from backend import config
+from backend.modelClasses import PromptHandler, LLMWrapper, TeacherAgent
 from backend.tts import TTSProcessor
-
+from backend.utils import reformat_transcript_to_list
 
 def load_scenario(scenario_file_path: str) -> str:
     """
     Load scenario details from a file.
+    
+    Args:
+        scenario_file_path (str): Path to the scenario file.
+    
+    Returns:
+        str: The scenario text.
     """
     with open(scenario_file_path, "r", encoding="utf-8") as file:
         return file.read()
 
-
-
-def format_transcript(transcript: str) -> list:
+def run_pipeline(scenario: str, country_name: str = "Colombia", language: str = "Spanish") -> dict:
     """
-    Split the transcript into non-empty, stripped lines,
-    ignoring lines that are just header separators (e.g., "-----").
-    """
-    lines = [line.strip() for line in transcript.splitlines() if line.strip()]
-    filtered_lines = [line for line in lines if not line.startswith("-----")]
-    return filtered_lines
-
-
-def run_pipeline(scenario: str, country_name: str = "Colombia") -> dict:
-    """
-    Given a scenario and country name, generate a transcript using the system prompt,
+    Given a scenario, country name, and language, generate a transcript using the system prompt,
     then process it into audio and save all outputs in a unique conversation folder.
+    
+    The system prompt template is formatted with {scenario}, {country_name}, and {language}.
+    The resulting transcript is then reformatted into a list of lines before passing to the TTS module.
+    
+    Args:
+        scenario (str): The scenario text.
+        country_name (str): The country name used in prompt formatting.
+        language (str): The target language for the conversation.
+    
+    Returns:
+        dict: Details of the generated conversation outputs.
     """
     unique_id = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     conversation_dir = os.path.join(config.GENERATED_OUTPUT_DIR, unique_id)
     os.makedirs(conversation_dir, exist_ok=True)
-
+    
     final_audio_file = os.path.join(conversation_dir, "final_conversation.wav")
     transcript_file = os.path.join(conversation_dir, "transcript.txt")
-
+    
+    # Generate raw transcript using the system prompt template.
     prompt_handler = PromptHandler(config.SYSTEM_PROMPT_TEMPLATE_PATH)
     transcript_generator = LLMWrapper(config.MODEL_NAME)
-    prompt = prompt_handler.format_prompt(scenario, country_name=country_name)
-    transcript = transcript_generator.generate(prompt)
-    print("Generated Transcript:")
-    print(transcript)
+    prompt = prompt_handler.format_prompt(
+        scenario=scenario, country_name=country_name, language=language
+    )
+    raw_transcript = transcript_generator.generate(prompt)
+    print("----- Generated Transcript -----")
+    print(raw_transcript)
 
+    # Create the teacher agent instance
+    teacher_agent = TeacherAgent(
+        template_path=config.TEACHER_PROMPT_TEMPLATE_PATH,
+        model_name=config.MODEL_NAME,
+        temperature=0.2,
+    )
+
+    # Generate the explained transcript using keyword arguments for additional context
+    explained_transcript = teacher_agent.explain(
+        raw_transcript, 
+        scenario=scenario, 
+        country_name=country_name,
+        language = language
+    )
+
+    print("----- Explained Transcript -----")
+    print(explained_transcript)
+    
+    # Save the transcript to a file.
     with open(transcript_file, "w", encoding="utf-8") as f:
-        f.write(transcript)
-
-    transcript_lines = format_transcript(transcript) #TODO
+        f.write(explained_transcript)
+    
+    # Reformat the transcript into a list of lines for TTS processing.
+    transcript_lines = reformat_transcript_to_list(explained_transcript)
+    print("----- Transcript Lines for TTS -----")
+    print(transcript_lines)
+    
+    # Process transcript into audio files using TTSProcessor.
     tts_processor = TTSProcessor(api_key=config.ELEVEN_API_KEY)
     tts_processor.process_transcript(
         transcript_lines,
-        speaker_voices=config.SPEAKER_VOICES,
         output_dir=conversation_dir,
-        final_audio_file=final_audio_file
+        final_audio_file=final_audio_file,
+        language=language,
+        country=country_name
     )
-
     return {
         "conversation_id": unique_id,
         "conversation_dir": conversation_dir,
@@ -63,12 +94,7 @@ def run_pipeline(scenario: str, country_name: str = "Colombia") -> dict:
         "final_audio_file": final_audio_file,
     }
 
-
 if __name__ == "__main__":
-
     scenario_text = load_scenario(config.SCENARIO_CAFE_PATH)
-
-    output = run_pipeline(scenario_text, country_name="Colombia")
-
+    output = run_pipeline(scenario_text, country_name="Colombia", language="Spanish")
     print("Pipeline complete:", output)
-

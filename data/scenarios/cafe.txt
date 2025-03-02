@@ -1,4 +1,0 @@
-A tourist enters a busy cafe and goes up to the counter to order.
-They don't know exactly what to order and want some advice from the server.
-After ordering and paying with card they take a seat and wait for their order to arrive.
-Once it arrives they interact with the server and finsih their order and then leave.

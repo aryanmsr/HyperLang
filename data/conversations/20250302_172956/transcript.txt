@@ -1,0 +1,79 @@
+Juan: "Hola, ¿qué tal? ¿Podemos empezar con tu chequeo de vuelo?"
+
+Maestro: "Juan greets Ana and asks if they can start checking in for his flight."
+
+Ana: "Claro, ¿a qué vuelo y destino te dirijes, por favor?"
+
+Maestro: "Ana asks Juan for his flight number and destination."
+
+Juan: "Soy Juan Rodríguez. Voy hacia Madrid en el vuelo AY-1234."
+
+Maestro: "Juan introduces himself as Juan Rodríguez and tells Ana he's flying to Madrid on flight AY-1234."
+
+Ana: "¡Hola, Juan Rodríguez! Tu pasaporte, por favor."
+
+Maestro: "Ana greets Juan Rodríguez and asks for his passport."
+
+Juan: "Aquí, Ana."
+
+Maestro: "Juan hands Ana his passport."
+
+Ana: "Gracias, Juan. Ahora te verifico tu reserva de vuelo." (Ana verifica la reserva)
+
+Maestro: "Ana verifies Juan's flight reservation."
+
+Ana: "¡Tu vuelo está confirmado! y te dirijes hacia Madrid. ¿Tienes equipaje de mano y/o equipaje a tejer?"
+
+Maestro: "Ana confirms Juan's flight and asks if he has carry-on luggage or checked luggage."
+
+Juan: "Sí, tengo un maletín grande que quiero tejer."
+
+Maestro: "Juan confirms that he has a large suitcase to check in."
+
+Ana: "Entendido, Juan. Por favor, coloca tu maletín en la escala electrónica."
+
+Maestro: "Ana tells Juan to place his suitcase on the electronic scale."
+
+(Juan coloca su maletín en la escala electrónica)
+
+Ana: "Gracias, Juan. Su maletín pesa 23 kilos. Ahora lo etiquetamos y lo enviaremos a la cubierta."
+
+Maestro: "Ana thanks Juan and tells him that his suitcase weighs 23 kilos. She will tag and send it to the baggage claim."
+
+Juan: "Entendido, muchas gracias."
+
+Maestro: "Juan understands and thanks Ana."
+
+Ana: "Ahora te informo tu puerta de embarque, tu hora de a bordo y si necesitás pasar por seguridad."
+
+Maestro: "Ana tells Juan his gate number, boarding time, and whether he needs to go through security."
+
+Juan: "Por favor, dímelo."
+
+Maestro: "Juan asks Ana to tell him."
+
+Ana: "Tu puerta de embarque es el A-22 y tu hora de a bordo es a las 14:30. Además, debes pasar por seguridad a la derecha de la puerta."
+
+Maestro: "Ana tells Juan his gate number is A-22, and his boarding time is 14:30. She also tells him to go through security to the right of the gate."
+
+Juan: "¡Entendido! ¿También puedes informarme de la hora de aterrizaje en Madrid?"
+
+Maestro: "Juan asks Ana for the estimated arrival time in Madrid."
+
+Ana: "Por supuesto. Tu vuelo aterrizará en Madrid a las 16:35."
+
+Maestro: "Ana tells Juan that his flight will arrive in Madrid at 16:35."
+
+Juan: "Muchas gracias, Ana."
+
+Maestro: "Juan thanks Ana."
+
+Ana: "¡De nada, Juan! Vuelve pronto. ¡Tenga un buen vuelo! ¡Gracias por volver a volar con nosotros!"
+
+Maestro: "Ana wishes Juan a safe flight and thanks him for choosing their airline."
+
+Juan: "¡De nuevo, muchas gracias, Ana! ¡Tengo una excelente experiencia!"
+
+Maestro: "Juan thanks Ana again and says he had a great experience."
+
+Maestro: "Alright, let's recap! Today, we learned how to check in for a flight, how to ask for flight information, and how to ask about the arrival time."

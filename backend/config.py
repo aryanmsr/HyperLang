@@ -21,10 +21,43 @@ TTS_MODEL_ID = "eleven_flash_v2_5"
 GENERATED_OUTPUT_DIR = "./data/conversations"
 PAUSE_DURATION_MS = 800
 
-# Speaker to voice mapping - NEED TO MAKE IT ROBUST
-SPEAKER_VOICES = {
-    "Juan Pablo": "sdxJtmxpzgSLekrYUGIu",
-    "José": "sdxJtmxpzgSLekrYUGIu",
-    "Ana": "86V9x9hrQds83qf7zaGn",
-    "Maestro": "JBFqnCBsd6RMkjVDRZzb",
+
+
+VOICE_CONFIG = {
+    "English": {
+        "default": {
+            "default": "JBFqnCBsd6RMkjVDRZzb", 
+        }
+    },
+
+    "French": {
+        "France": {
+            "male": [
+                "hv6gVog5LgtIUX88Nmq8"
+            ],
+            "female": [
+                "pVsdIxxCbRrbiwOhiRwg"
+            ]
+        }
+    },
+
+    "Spanish": {
+        "Colombia": {
+            "male": [
+                "J2Jb9yZNvpXUNAL3a2bw"
+            ],
+            "female": [
+                "86V9x9hrQds83qf7zaGn"
+            ]
+        },
+        "Spain": {
+            "male": [
+                "wB2lj4ZqL876iV5QQ5KK"
+            ],
+            "female": [
+                "RgXx32WYOGrd7gFNifSf"
+            ]
+        }
+    }
 }
+

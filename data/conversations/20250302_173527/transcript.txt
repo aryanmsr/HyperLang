@@ -1,0 +1,55 @@
+Pierre: "Bonjour, madame, souhaitez-vous commander quelque chose?"
+
+Maestro: "Pierre greets the woman and asks if she would like to order something."
+
+Marie: "Oui, je suis un visiteur, je ne sais pas ce que je dois commander."
+
+Maestro: "Marie introduces herself as a tourist and says she doesn't know what to order."
+
+Pierre: "Ah, vous êtes un visiteur! Vous pouvez commander un café, un croissant, un pain au chocolat ou un tartine aux légumes, c'est ce qu'ils recommandent dans ma région."
+
+Maestro: "Pierre, being a local, recommends ordering a coffee, a croissant, a chocolate pastry, or a vegetable tartine."
+
+Marie: "Merci, je vais commander un café noir et un croissant, s'il vous plaît."
+
+Maestro: "Marie orders a black coffee and a croissant."
+
+Pierre: "D'accord, c'est 5 euros dix. Pouvez-vous donner votre carte bancaire, s'il vous plaît?"
+
+Maestro: "Pierre asks for Marie's card to process the payment."
+
+Marie: "Oui, d'accord." (Pays avec sa carte)
+
+Maestro: "Marie pays with her card."
+
+Pierre: "Merci, madame. Votre ordre sera prêt dans quelques minutes."
+
+Maestro: "Pierre thanks Marie and tells her that her order will be ready soon."
+
+Marie: "Merci, monsieur."
+
+Maestro: "Marie thanks Pierre."
+
+(Pause)
+
+Marie: "Ah, mon café et mon croissant, c'est délicieux!"
+
+Maestro: "Marie compliments the server on the delicious coffee and croissant."
+
+Pierre: "Je suis heureux de vous pouvoir servir, madame. Voulez-vous prendre un dessert supplémentaire ou un autre café?"
+
+Maestro: "Pierre offers Marie an additional dessert or another coffee."
+
+Marie: "Non, merci, c'est tout ce que je voulais aujourd'hui."
+
+Maestro: "Marie declines, saying that's all she wanted today."
+
+Pierre: "Entendez-vous, madame? Vous venez de partager un moment agréable avec nous. A bientôt!"
+
+Maestro: "Pierre wishes Marie a pleasant rest of her day and thanks her for sharing a moment with them."
+
+Marie: "Merci, monsieur." (Marie quitte la café)
+
+Maestro: "Pierre says goodbye as Marie leaves."
+
+Maestro: "Alright, let's recap! Today, we learned how to order at a café, respond politely, and make small talk with the server."
