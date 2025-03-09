@@ -23,45 +23,6 @@ PAUSE_DURATION_MS = 800
 
 
 
-VOICE_CONFIG = {
-    "English": {
-        "default": {
-            "default": "JBFqnCBsd6RMkjVDRZzb", 
-        }
-    },
-
-    "French": {
-        "France": {
-            "male": [
-                "hv6gVog5LgtIUX88Nmq8"
-            ],
-            "female": [
-                "pVsdIxxCbRrbiwOhiRwg"
-            ]
-        }
-    },
-
-    "Spanish": {
-        "Colombia": {
-            "male": [
-                "J2Jb9yZNvpXUNAL3a2bw"
-            ],
-            "female": [
-                "86V9x9hrQds83qf7zaGn"
-            ]
-        },
-        "Spain": {
-            "male": [
-                "wB2lj4ZqL876iV5QQ5KK"
-            ],
-            "female": [
-                "RgXx32WYOGrd7gFNifSf"
-            ]
-        }
-    }
-}
-
-# Character configuration mapping fixed characters to voice IDs
 CHARACTER_CONFIG = {
     "maestro": {
         "name": "Maestro",

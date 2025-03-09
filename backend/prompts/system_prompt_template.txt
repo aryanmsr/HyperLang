@@ -7,6 +7,7 @@ The conversation must be based on the following scenario: **{scenario}**.
 1. **{language} Only**
    - **Do not include any English text** except for character names.
    - Reflect the **local dialect** and **culture** of {country_name} in your {language}.
+   - Add some disfluencies and repetitions to make it sound more human. Use commas (,) and disfluencies like (uh) to set the pace. **This is very important**.
 
 2. **Fixed Characters**
    - You MUST use ONLY these character names for {country_name}:

@@ -1,3 +1,21 @@
+"""
+Test Script for FastAPI Language Learning Backend Endpoints
+
+This script tests the two main endpoints of the language learning backend:
+1. /generate_explained_transcript - Generates a transcript with teacher commentary
+2. /generate_audio - Generates audio files from the transcript
+
+The script verifies:
+- Proper character assignment based on language/country
+- Correct language usage in dialogues
+- Maestro's English explanations
+- Audio file generation with correct voice mappings
+
+Usage:
+    1. Ensure FastAPI server is running (uvicorn backend.app:app --reload)
+    2. Run: python -m backend.test_endpoints
+"""
+
 import requests
 import json
 
@@ -5,7 +23,23 @@ import json
 BASE_URL = "http://localhost:8000"
 
 def test_generate_explained_transcript():
-    """Test the generate_explained_transcript endpoint"""
+    """
+    Test the generate_explained_transcript endpoint.
+    
+    This function tests transcript generation for multiple language-country pairs:
+    1. Spanish (Colombia) - Tests basic dialogue generation
+    2. French (France) - Tests multilingual support
+    
+    For each test case, it verifies:
+    - Proper HTTP response (200 OK)
+    - Correct transcript format
+    - Character name consistency
+    - Language appropriateness
+    - Maestro's commentary integration
+    
+    Returns:
+        None. Prints test results to console.
+    """
     print("\n----- Testing Generate Explained Transcript Endpoint -----")
     
     # Test case 1: Spanish Colombia
@@ -51,7 +85,30 @@ def test_generate_explained_transcript():
         print("Error:", response.text)
 
 def test_generate_audio():
-    """Test the generate_audio endpoint"""
+    """
+    Test the generate_audio endpoint.
+    
+    This function tests the complete audio generation pipeline:
+    1. Transcript generation with character dialogue
+    2. Maestro's commentary integration
+    3. Text-to-Speech processing
+    4. Audio file creation and combination
+    
+    Verifies:
+    - Proper HTTP response (200 OK)
+    - File generation (transcript and audio)
+    - Directory structure creation
+    - Character-to-voice mapping
+    - Audio file accessibility
+    
+    The test uses a Spanish (Colombia) scenario to verify:
+    - Correct voice assignment for Carlos and Maria
+    - Proper English voice for Maestro
+    - Appropriate pauses between dialogue lines
+    
+    Returns:
+        None. Prints test results and file locations to console.
+    """
     print("\n----- Testing Generate Audio Endpoint -----")
     
     payload = {
@@ -70,8 +127,15 @@ def test_generate_audio():
         result = response.json()
         print("\nGeneration Details:")
         print(f"Message: {result['message']}")
-        print("\nFile Locations:")
+        
+        # Print the transcript content
         details = result['details']
+        transcript_file = details['transcript_file']
+        print("\nTranscript Content:")
+        with open(transcript_file, 'r', encoding='utf-8') as f:
+            print(f.read())
+            
+        print("\nFile Locations:")
         print(f"- Conversation ID: {details['conversation_id']}")
         print(f"- Conversation Directory: {details['conversation_dir']}")
         print(f"- Transcript File: {details['transcript_file']}")
@@ -80,6 +144,19 @@ def test_generate_audio():
         print("Error:", response.text)
 
 if __name__ == "__main__":
+    """
+    Main execution block.
+    
+    Performs:
+    1. Server availability check
+    2. Transcript generation test
+    3. Audio generation test
+    
+    Requires:
+    - FastAPI server running on localhost:8000
+    - Valid API key for ElevenLabs
+    - Proper configuration in config.py
+    """
     # First, check if the server is running
     try:
         health_check = requests.get(f"{BASE_URL}/")

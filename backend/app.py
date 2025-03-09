@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from typing import List
 from backend import config
 from backend.modelClasses import PromptHandler, LLMWrapper, TeacherAgent
 from backend.pipeline import run_pipeline
@@ -8,7 +9,7 @@ from backend.utils import reformat_transcript_to_list
 
 app = FastAPI()
 
-# Enable CORS for frontend requests (e.g., from a Next.js frontend)
+# Enable CORS for frontend requests
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000"],
@@ -18,46 +19,22 @@ app.add_middleware(
 )
 
 class TranscriptRequest(BaseModel):
-    """
-    Request model for generating explained transcripts and audio.
-    
-    Attributes:
-        scenario (str): The scenario text for which a transcript is generated.
-        country_name (str): The country name used in prompt formatting (default: "Colombia").
-        language (str): The target language for the conversation (default: "Spanish").
-    """
+    """Request model for generating transcripts and audio"""
     scenario: str
     country_name: str = "Colombia"
     language: str = "Spanish"
 
 class TranscriptResponse(BaseModel):
-    """
-    Response model containing the formatted transcript lines.
-    
-    Attributes:
-        transcript (list): List of formatted transcript lines.
-    """
-    transcript: list
+    """Response model containing the formatted transcript lines"""
+    transcript: List[str]
 
 class AudioResponse(BaseModel):
-    """
-    Response model for audio generation.
-    
-    Attributes:
-        message (str): Status message.
-        details (dict): Details about the generated conversation outputs (e.g., conversation folder, transcript file, and audio file paths).
-    """
+    """Response model for audio generation details"""
     message: str
     details: dict
 
 @app.get("/")
 async def root():
-    """
-    Root endpoint returning a welcome message.
-    
-    Returns:
-        dict: A dictionary with a welcome message.
-    """
     return {"message": "Hello World from FastAPI"}
 
 @app.post("/generate_explained_transcript", response_model=TranscriptResponse)
@@ -68,13 +45,17 @@ async def generate_explained_transcript_endpoint(request: TranscriptRequest):
     """
     # Get character information from config
     characters = config.CHARACTER_CONFIG[request.language][request.country_name]
+    print("----- Characters -----")
+    print(characters)
+
     character_1 = characters["speaker_1"]
     character_2 = characters["speaker_2"]
-    
+
     # Generate raw transcript
     prompt_handler = PromptHandler(config.SYSTEM_PROMPT_TEMPLATE_PATH)
     transcript_generator = LLMWrapper(model_name=config.MODEL_NAME)
     
+    # Format prompt with character names
     prompt = prompt_handler.format_prompt(
         scenario=request.scenario,
         country_name=request.country_name,
@@ -82,13 +63,17 @@ async def generate_explained_transcript_endpoint(request: TranscriptRequest):
         character_1_name=character_1["name"],
         character_2_name=character_2["name"]
     )
-    raw_transcript = transcript_generator.generate(prompt)
     
-    # Generate explained transcript
+    # Generate initial transcript
+    raw_transcript = transcript_generator.generate(prompt)
+    print("----- Raw Transcript -----")
+    print(raw_transcript)
+    
+    # Generate explained transcript with Maestro's commentary
     teacher_agent = TeacherAgent(
         template_path=config.TEACHER_PROMPT_TEMPLATE_PATH,
         model_name=config.MODEL_NAME,
-        temperature=0.2,
+        temperature=0.0,
     )
     
     explained_transcript = teacher_agent.explain(
@@ -99,18 +84,22 @@ async def generate_explained_transcript_endpoint(request: TranscriptRequest):
         character_1_name=character_1["name"],
         character_2_name=character_2["name"]
     )
+    print("----- Explained Transcript -----")
+    print(explained_transcript)
     
     # Format into lines
     transcript_lines = reformat_transcript_to_list(explained_transcript)
+    print("----- Formatted Lines -----")
+    print(transcript_lines)
     
-    return {"transcript": transcript_lines}  # Return the formatted list
+    return {"transcript": transcript_lines}
 
 @app.post("/generate_audio", response_model=AudioResponse)
 async def generate_audio_endpoint(request: TranscriptRequest):
     """
     Generate audio using the full pipeline.
+    Returns details about the generated files.
     """
-    # Simply use run_pipeline which handles everything
     result = run_pipeline(
         scenario=request.scenario,
         country_name=request.country_name,
