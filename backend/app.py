@@ -32,12 +32,12 @@ class TranscriptRequest(BaseModel):
 
 class TranscriptResponse(BaseModel):
     """
-    Response model containing the generated explained transcript.
+    Response model containing the formatted transcript lines.
     
     Attributes:
-        transcript (str): The explained transcript with teacher commentary.
+        transcript (list): List of formatted transcript lines.
     """
-    transcript: str
+    transcript: list
 
 class AudioResponse(BaseModel):
     """
@@ -64,76 +64,63 @@ async def root():
 async def generate_explained_transcript_endpoint(request: TranscriptRequest):
     """
     Generate an explained transcript with teacher commentary.
-    
-    This endpoint uses the system prompt template to generate a raw transcript based on the given
-    scenario, country, and language, then applies the teacher prompt template (via TeacherAgent) to add 
-    English commentary and translations while preserving the original dialogue.
-    
-    Args:
-        request (TranscriptRequest): The request body containing scenario, country_name, and language.
-    
-    Returns:
-        dict: A dictionary containing the explained transcript.
+    Returns the transcript as a formatted list of lines.
     """
+    # Get character information from config
+    characters = config.CHARACTER_CONFIG[request.language][request.country_name]
+    character_1 = characters["speaker_1"]
+    character_2 = characters["speaker_2"]
+    
+    # Generate raw transcript
     prompt_handler = PromptHandler(config.SYSTEM_PROMPT_TEMPLATE_PATH)
     transcript_generator = LLMWrapper(model_name=config.MODEL_NAME)
+    
+    prompt = prompt_handler.format_prompt(
+        scenario=request.scenario,
+        country_name=request.country_name,
+        language=request.language,
+        character_1_name=character_1["name"],
+        character_2_name=character_2["name"]
+    )
+    raw_transcript = transcript_generator.generate(prompt)
+    
+    # Generate explained transcript
     teacher_agent = TeacherAgent(
         template_path=config.TEACHER_PROMPT_TEMPLATE_PATH,
         model_name=config.MODEL_NAME,
         temperature=0.2,
     )
     
-    # Format the system prompt with scenario, country, and language.
-    prompt = prompt_handler.format_prompt(
-        scenario=request.scenario,
-        country_name=request.country_name,
-        language=request.language
-    )
-    raw_transcript = transcript_generator.generate(prompt)
-    print(raw_transcript)
-    
     explained_transcript = teacher_agent.explain(
         raw_transcript,
         scenario=request.scenario,
         country_name=request.country_name,
-        language=request.language
+        language=request.language,
+        character_1_name=character_1["name"],
+        character_2_name=character_2["name"]
     )
-    print(explained_transcript)
     
-    return {"transcript": explained_transcript}
+    # Format into lines
+    transcript_lines = reformat_transcript_to_list(explained_transcript)
+    
+    return {"transcript": transcript_lines}  # Return the formatted list
 
 @app.post("/generate_audio", response_model=AudioResponse)
 async def generate_audio_endpoint(request: TranscriptRequest):
     """
-    Generate audio from an explained transcript.
-    
-    This endpoint runs the full pipeline to generate a raw transcript, produce an explained transcript,
-    reformat the explained transcript into a list of lines using a utility function, and then convert 
-    the transcript to audio using TTS. The outputs (transcript and audio files) are saved in a uniquely 
-    named conversation folder.
-    
-    Args:
-        request (TranscriptRequest): The request body containing scenario, country_name, and language.
-    
-    Returns:
-        dict: A dictionary containing a status message and details about the generated outputs.
+    Generate audio using the full pipeline.
     """
+    # Simply use run_pipeline which handles everything
     result = run_pipeline(
         scenario=request.scenario,
         country_name=request.country_name,
         language=request.language
     )
     
-    transcript_file = result.get("transcript_file")
-    with open(transcript_file, "r", encoding="utf-8") as f:
-        explained_transcript = f.read()
-
-    transcript_lines = reformat_transcript_to_list(explained_transcript)
-    print("----- Reformat Transcript Lines -----")
-    print(transcript_lines)
-    
-    result["transcript_lines"] = transcript_lines
-    return {"message": "Audio generated", "details": result}
+    return {
+        "message": "Audio generated successfully",
+        "details": result
+    }
 
 if __name__ == "__main__":
     import uvicorn

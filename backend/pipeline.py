@@ -23,7 +23,7 @@ def run_pipeline(scenario: str, country_name: str = "Colombia", language: str = 
     Given a scenario, country name, and language, generate a transcript using the system prompt,
     then process it into audio and save all outputs in a unique conversation folder.
     
-    The system prompt template is formatted with {scenario}, {country_name}, and {language}.
+    The system prompt template is formatted with {scenario}, {country_name}, {language}, and character names.
     The resulting transcript is then reformatted into a list of lines before passing to the TTS module.
     
     Args:
@@ -41,11 +41,20 @@ def run_pipeline(scenario: str, country_name: str = "Colombia", language: str = 
     final_audio_file = os.path.join(conversation_dir, "final_conversation.wav")
     transcript_file = os.path.join(conversation_dir, "transcript.txt")
     
-    # Generate raw transcript using the system prompt template.
+    # Get character information from config
+    characters = config.CHARACTER_CONFIG[language][country_name]
+    character_1 = characters["speaker_1"]
+    character_2 = characters["speaker_2"]
+    
+    # Generate raw transcript using the system prompt template with character names
     prompt_handler = PromptHandler(config.SYSTEM_PROMPT_TEMPLATE_PATH)
     transcript_generator = LLMWrapper(config.MODEL_NAME)
     prompt = prompt_handler.format_prompt(
-        scenario=scenario, country_name=country_name, language=language
+        scenario=scenario,
+        country_name=country_name,
+        language=language,
+        character_1_name=character_1["name"],
+        character_2_name=character_2["name"]
     )
     raw_transcript = transcript_generator.generate(prompt)
     print("----- Generated Transcript -----")
@@ -55,7 +64,7 @@ def run_pipeline(scenario: str, country_name: str = "Colombia", language: str = 
     teacher_agent = TeacherAgent(
         template_path=config.TEACHER_PROMPT_TEMPLATE_PATH,
         model_name=config.MODEL_NAME,
-        temperature=0.2,
+        temperature=0.0,
     )
 
     # Generate the explained transcript using keyword arguments for additional context
@@ -63,7 +72,9 @@ def run_pipeline(scenario: str, country_name: str = "Colombia", language: str = 
         raw_transcript, 
         scenario=scenario, 
         country_name=country_name,
-        language = language
+        language=language,
+        character_1_name=character_1["name"],
+        character_2_name=character_2["name"]
     )
 
     print("----- Explained Transcript -----")
@@ -85,7 +96,8 @@ def run_pipeline(scenario: str, country_name: str = "Colombia", language: str = 
         output_dir=conversation_dir,
         final_audio_file=final_audio_file,
         language=language,
-        country=country_name
+        country=country_name,
+        characters=characters  # Pass character config to TTS processor
     )
     return {
         "conversation_id": unique_id,

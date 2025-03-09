@@ -1,0 +1,24 @@
+Carlos: "Good morning, Maria. How are you this morning?"
+Maria: "I'm fine, Carlos. And you?"
+
+Maestro: "Notice the casual greeting 'Buenos días' and the response 'Bien' which means 'fine'. This is a common way to greet each other in Colombia."
+
+Carlos: "I'm very well, thank you. And you?"
+Maria: "I'm also very well, how about you?"
+
+Maestro: "Here, '¿y qué tal?' is a common way to ask 'how are you?' in a casual setting."
+
+Carlos: "I'm coming to ask for a coffee, do you have any recommendations?"
+Maria: "Of course, Carlos. Attention: we have a special Colombian coffee, prepared with beans from the Huila region. Would you like to try it?"
+
+Maestro: "Notice the use of 'Claro' to mean 'of course' or 'certainly'. This is a common response in Colombia."
+
+Carlos: "Yes, of course. Thank you, Maria!"
+Maria: "You're welcome, Carlos. I hope you enjoy it."
+
+Maestro: "Here, 'Espero que te guste' means 'I hope you like it'. This is a polite way to express hope for someone's enjoyment in Colombia."
+
+Carlos: "Very well, goodbye."
+Maria: "Goodbye, Carlos."
+
+Maestro: "Alright, let's recap! 'Buenos días' means 'good morning', 'Claro' means 'of course', 'Espero que te guste' means 'I hope you like it'. Till next time, keep practicing!"

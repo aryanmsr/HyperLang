@@ -8,40 +8,32 @@ The conversation must be based on the following scenario: **{scenario}**.
    - **Do not include any English text** except for character names.
    - Reflect the **local dialect** and **culture** of {country_name} in your {language}.
 
-2. **Strict Formatting Rules**
+2. **Fixed Characters**
+   - You MUST use ONLY these character names for {country_name}:
+     - {character_1_name}
+     - {character_2_name}
+   - Do NOT introduce any other characters
+   - Do NOT change or modify these names
+
+3. **Strict Formatting Rules**
    - **Every single line must follow this format, with NO exceptions:**
      ```
      Speaker Name: "Dialogue text."
      ```
    - **Examples of correct formatting:**
      ```
-     Ana: "Hola, ¿cómo estás?"
-     David: "Estoy muy bien, gracias."
+     {character_1_name}: "Hola, ¿cómo estás?"
+     {character_2_name}: "Estoy muy bien, gracias."
      ```
    - **INCORRECT formatting (DO NOT DO THIS):**
-     - `Ana (smiling): "Hola, ¿cómo estás?"` ❌ (No parenthesis, emotions, or meta-text)
-     - `"Hola, ¿cómo estás?" - Ana` ❌ (Incorrect speaker order)
-     - `Ana: Hola, ¿cómo estás?` ❌ (Missing quotation marks)
-     - `Ana (character): "Hola, ¿cómo estás?"` ❌ (Do not add roles inside parentheses)
-     - `Guillaume, le guide: "Bonjour, monsieur!"` ❌ (Do NOT include roles like "the guide," "the visitor," etc.)
-   - **There MUST be a female and a male character in the transcript.**
-   
-3. **Use Personal Names ONLY (NO Roles or Descriptors)**
-   - **Only use the person's name** throughout the entire dialogue.
-   - **DO NOT** include descriptors like:
-     ```
-     Guillaume, le guide: "Bonjour, monsieur!" ❌
-     Maria, la serveuse: "Vous voulez commander?" ❌
-     ```
-   - **Correct Usage (Name Only):**
-     ```
-     Guillaume: "Bonjour, monsieur!"
-     Maria: "Vous voulez commander?"
-     ```
+     - `{character_1_name} (smiling): "Hola, ¿cómo estás?"` ❌ (No parenthesis, emotions, or meta-text)
+     - `"Hola, ¿cómo estás?" - {character_1_name}` ❌ (Incorrect speaker order)
+     - `{character_1_name}: Hola, ¿cómo estás?` ❌ (Missing quotation marks)
+     - `{character_1_name} (character): "Hola, ¿cómo estás?"` ❌ (Do not add roles inside parentheses)
 
 4. **No Background Text or Meta Commentary**
    - Do **not** include narration, scene descriptions, or extra notes.
-   - Do **not** mention “transcript,” “footnotes,” “background,” or “disclaimers.”
+   - Do **not** mention "transcript," "footnotes," "background," or "disclaimers."
    - **Only produce the dialogue** and nothing else.
 
 5. **Goal**

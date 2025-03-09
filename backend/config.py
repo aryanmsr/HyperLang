@@ -61,3 +61,65 @@ VOICE_CONFIG = {
     }
 }
 
+# Character configuration mapping fixed characters to voice IDs
+CHARACTER_CONFIG = {
+    "maestro": {
+        "name": "Maestro",
+        "gender": "male",
+        "language": "English",
+        "voice_id": "JBFqnCBsd6RMkjVDRZzb"  # Fixed English voice for Maestro
+    },
+    "Spanish": {
+        "Colombia": {
+            "speaker_1": {
+                "name": "Carlos",
+                "gender": "male",
+                "language": "Spanish",
+                "country": "Colombia",
+                "voice_id": "sdxJtmxpzgSLekrYUGIu"
+            },
+            "speaker_2": {
+                "name": "Maria",
+                "gender": "female",
+                "language": "Spanish",
+                "country": "Colombia",
+                "voice_id": "86V9x9hrQds83qf7zaGn"
+            }
+        },
+        "Spain": {
+            "speaker_1": {
+                "name": "Antonio",
+                "gender": "male",
+                "language": "Spanish",
+                "country": "Spain",
+                "voice_id": "wB2lj4ZqL876iV5QQ5KK"
+            },
+            "speaker_2": {
+                "name": "Isabel",
+                "gender": "female",
+                "language": "Spanish",
+                "country": "Spain",
+                "voice_id": "RgXx32WYOGrd7gFNifSf"
+            }
+        }
+    },
+    "French": {
+        "France": {
+            "speaker_1": {
+                "name": "Charles",
+                "gender": "male",
+                "language": "French",
+                "country": "France",
+                "voice_id": "hv6gVog5LgtIUX88Nmq8"
+            },
+            "speaker_2": {
+                "name": "Sophie",
+                "gender": "female",
+                "language": "French",
+                "country": "France",
+                "voice_id": "pVsdIxxCbRrbiwOhiRwg"
+            }
+        }
+    }
+}
+

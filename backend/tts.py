@@ -71,49 +71,28 @@ class TTSProcessor:
 
     def process_transcript(
         self, transcript_lines: list, output_dir: str, final_audio_file: str,
-        language: str = "Spanish", country: str = "Colombia"
+        language: str = "Spanish", country: str = "Colombia", characters: dict = None
     ) -> None:
         """
         For each transcript line (formatted as 'Speaker: Speech'),
         synthesize audio, convert to WAV, and then combine all files.
         
-        Dynamically assigns voices based on language, country, and inferred speaker gender:
-          - "Maestro" and "Lesson Summary" always use the fixed English voice.
-          - For all other speakers, if language is not English:
-                Use voices from the {language} configuration.
-                If a country-specific list exists, use it; otherwise, use the default for that language.
-                The LLM is used to infer the gender of each speaker, and male speakers are assigned from the "male" list,
-                while female speakers are assigned from the "female" list.
+        Uses fixed character configurations to map speakers to voices:
+          - "Maestro" always uses the fixed English voice.
+          - Other speakers are mapped directly to their configured voices.
         
         Args:
             transcript_lines (list): List of transcript lines.
             output_dir (str): Directory to save the individual audio files.
             final_audio_file (str): Path to the final combined audio file.
-            language (str): The language of the conversation (e.g., "Spanish", "French", "English").
+            language (str): The language of the conversation (e.g., "Spanish", "French").
             country (str): The country for voice mapping (e.g., "Colombia").
+            characters (dict): Character configuration mapping speakers to voices.
         """
         os.makedirs(output_dir, exist_ok=True)
         
-        # Fixed voice for Maestro and Lesson Summary (always English).
-        fixed_voice = config.VOICE_CONFIG["English"]["default"]["default"]
-        
-        # For non-English languages, look up the voice config.
-        if language != "English":
-            language_key = language.title()  # Ensure correct key, e.g., "Spanish" or "French".
-            language_config = config.VOICE_CONFIG.get(language_key, config.VOICE_CONFIG["Spanish"])
-            voice_config = language_config.get(country, language_config.get("default"))
-        else:
-            voice_config = config.VOICE_CONFIG["English"]["default"]
-        
-        available_male = list(voice_config.get("male", []))
-        available_female = list(voice_config.get("female", []))
-        
-        # Infer speaker genders using LLM.
-        full_transcript = "\n".join(transcript_lines)
-        inferred_genders = infer_speaker_genders(full_transcript)
-        print("Inferred speaker genders:", inferred_genders)
-        
-        assigned_voices = {}
+        # Get Maestro's fixed voice configuration
+        maestro_config = config.CHARACTER_CONFIG["maestro"]
         
         for idx, line in enumerate(transcript_lines, start=1):
             if ": " not in line:
@@ -124,40 +103,22 @@ class TTSProcessor:
             speaker = speaker.strip()
             text = text.strip()
             
-            if speaker in ["Maestro", "Lesson Summary"]:
-                speaker_id = fixed_voice
+            # Remove quotation marks if present
+            if text.startswith('"') and text.endswith('"'):
+                text = text[1:-1]
+            
+            # Get voice ID based on speaker
+            if speaker in ["Maestro", "Key learning points", "Lesson Summary"]:
+                speaker_id = maestro_config["voice_id"]
             else:
-                gender = inferred_genders.get(speaker)
-                if not gender:
-                    print(f"Gender not inferred for '{speaker}', skipping line {idx}.")
+                # Find the matching character in the configuration
+                for char_key, char_info in characters.items():
+                    if char_info["name"] == speaker:
+                        speaker_id = char_info["voice_id"]
+                        break
+                else:
+                    print(f"No voice configuration found for speaker '{speaker}'. Skipping line {idx}.")
                     continue
-                
-                if speaker not in assigned_voices:
-                    if gender.lower() == "male":
-                        if available_male:
-                            assigned_voices[speaker] = available_male.pop(0)
-                        else:
-                            # Fallback to default if available.
-                            fallback = config.VOICE_CONFIG[language]["default"].get("male", [None])[0]
-                            if fallback:
-                                assigned_voices[speaker] = fallback
-                            else:
-                                print(f"No male voice available for '{speaker}'. Skipping line {idx}.")
-                                continue
-                    elif gender.lower() == "female":
-                        if available_female:
-                            assigned_voices[speaker] = available_female.pop(0)
-                        else:
-                            fallback = config.VOICE_CONFIG[language]["default"].get("female", [None])[0]
-                            if fallback:
-                                assigned_voices[speaker] = fallback
-                            else:
-                                print(f"No female voice available for '{speaker}'. Skipping line {idx}.")
-                                continue
-                    else:
-                        print(f"Unknown gender '{gender}' for speaker '{speaker}'. Skipping line {idx}.")
-                        continue
-                speaker_id = assigned_voices[speaker]
             
             if not speaker_id:
                 print(f"No speaker id found for '{speaker}'. Skipping line {idx}.")
