@@ -24,9 +24,8 @@ Build a backend that simulates conversations between AI agents in **Spanish** an
 
 ## Tech Stack:
 - **Backend:** FastAPI
-- **LLM:** Mistral 7B Instruct
-- **TTS:** Flash v2.5 (ElevenLabs)
-
+- **LLM:** Mistral 7B Instruct v0.3
+- **TTS:** ElevenLabs Flash v2.5
 ---
 
 ## Usage:
@@ -47,18 +46,17 @@ Create a `.env` file in the project root with your API keys:
 ### 2. Running the Backend:
 - **Start the FastAPI server from the project root:**
   ```bash
-  uvicorn app.app:app --reload
+  uvicorn backend.app:app --reload
   ```
 
 ### 3. Endpoints:
-- `/generate_transcript`: Generates a raw dialogue transcript.
-- `/generate_explained_transcript`: Generates a transcript with teacher commentary and translation
-- `/generate_audio`: Runs the full pipeline (transcript generation, TTS processing) and saves outputs (transcript and audio files) in a uniquely named folder under `data/conversations/`.
+- `/generate_explained_transcript`: Generates a transcript with teacher commentary.
+- `/generate_audio`: Runs the full pipeline (transcript generation, TTS processing) and saves outputs
 
 ### 4. Testing:
 - **Swagger UI**: Navigate to http://127.0.0.1:8000/docs to interact with the API endpoints.
-- **cURL Commands:**: Use cURL to test endpoints.
-- **Jupyter Notebook**: Use the provided `tts_experiments_v3_elevenlabs.ipynb` notebooks to test individual modules and track output at each step.
+- **Test Script**: Run `python -m backend.test_endpoints` to test the endpoints.
+- **Jupyter Notebook**: Use `tts_experiments_v3_elevenlabs.ipynb` for interactive testing.
 
 ### 5. Output:
 Each conversation generates a unique folder under `data/conversations/` containing:
