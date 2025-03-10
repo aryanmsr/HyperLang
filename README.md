@@ -22,6 +22,15 @@ Build a backend that simulates conversations between AI agents in **Spanish** an
 
 ---
 
+## Future Enhancements [TODO]:
+- **Sound Effects:** Add ambient background sounds and effects to enhance the learning experience. Examples:
+  - Café ambiance for restaurant scenarios
+  - Airport/airplane sounds for travel dialogues
+  - Street sounds for city tour conversations
+  - Background music transitions between scenes
+
+---
+
 ## Tech Stack:
 - **Backend:** FastAPI
 - **LLM:** Mistral 7B Instruct v0.3
