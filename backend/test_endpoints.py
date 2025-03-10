@@ -1,7 +1,7 @@
 """
-Test Script for FastAPI Language Learning Backend Endpoints
+Test Script for FastAPI HyperLang Backend Endpoints
 
-This script tests the two main endpoints of the language learning backend:
+This script tests the two main endpoints of the HyperLang Backend:
 1. /generate_explained_transcript - Generates a transcript with teacher commentary
 2. /generate_audio - Generates audio files from the transcript
 
@@ -15,6 +15,8 @@ Usage:
     1. Ensure FastAPI server is running (uvicorn backend.app:app --reload)
     2. Run: python -m backend.test_endpoints
 """
+
+#TODO: Add more robust testing for fundamental functionality, including error handling and edge cases.
 
 import requests
 import json
