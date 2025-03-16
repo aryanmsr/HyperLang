@@ -1,8 +1,54 @@
+import boto3
 import json
+import os
 from backend import config
 from backend.modelClasses import LLMWrapper
+from dotenv import load_dotenv
+
+load_dotenv()
+
+aws_access_key_id = os.environ.get('AWS_ACCESS_KEY_ID')
+aws_secret_access_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
+aws_default_region = os.environ.get('AWS_DEFAULT_REGION')
+
+session = boto3.Session(
+    aws_access_key_id=aws_access_key_id,
+    aws_secret_access_key=aws_secret_access_key,
+    region_name=aws_default_region
+)
+
+s3_client = session.client('s3')
 
 
+def upload_to_s3(file_path, bucket_name, s3_key):
+    """
+    Upload a file to an S3 bucket.
+
+    Args:
+        file_path (str): The local path to the file to upload.
+        bucket_name (str): The name of the S3 bucket.
+        s3_key (str): The S3 key (path) where the file will be stored.
+    """
+    try:
+        s3_client.upload_file(file_path, bucket_name, s3_key)
+        print(f"Uploaded {file_path} to s3://{bucket_name}/{s3_key}")
+    except Exception as e:
+        print(f"Failed to upload {file_path} to S3: {e}")
+
+def download_from_s3(bucket_name, s3_key, download_path):
+    """
+    Download a file from an S3 bucket.
+
+    Args:
+        bucket_name (str): The name of the S3 bucket.
+        s3_key (str): The S3 key (path) of the file to download.
+        download_path (str): The local path where the file will be saved.
+    """
+    try:
+        s3_client.download_file(bucket_name, s3_key, download_path)
+        print(f"Downloaded s3://{bucket_name}/{s3_key} to {download_path}")
+    except Exception as e:
+        print(f"Failed to download {s3_key} from S3: {e}")
 
 
 def infer_speaker_genders(transcript: str) -> dict:

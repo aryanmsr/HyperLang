@@ -4,7 +4,7 @@ from pydub import AudioSegment
 from elevenlabs import ElevenLabs, save
 from dotenv import load_dotenv
 from backend import config
-from backend.utils import infer_speaker_genders
+from backend.utils import infer_speaker_genders, upload_to_s3
 
 load_dotenv()
 
@@ -71,15 +71,16 @@ class TTSProcessor:
 
     def process_transcript(
         self, transcript_lines: list, output_dir: str, final_audio_file: str,
-        language: str = "Spanish", country: str = "Colombia", characters: dict = None
+        language: str = "Spanish", country: str = "Colombia", characters: dict = None,
+        local_storage: bool = config.USE_LOCAL_STORAGE
     ) -> None:
         """
         For each transcript line (formatted as 'Speaker: Speech'),
         synthesize audio, convert to WAV, and then combine all files.
         
         Uses fixed character configurations to map speakers to voices:
-          - "Maestro" always uses the fixed English voice.
-          - Other speakers are mapped directly to their configured voices.
+        - "Maestro" always uses the fixed English voice.
+        - Other speakers are mapped directly to their configured voices.
         
         Args:
             transcript_lines (list): List of transcript lines.
@@ -88,6 +89,7 @@ class TTSProcessor:
             language (str): The language of the conversation (e.g., "Spanish", "French").
             country (str): The country for voice mapping (e.g., "Colombia").
             characters (dict): Character configuration mapping speakers to voices.
+            local_storage (bool): Flag to determine if outputs should be stored locally.
         """
         os.makedirs(output_dir, exist_ok=True)
         
@@ -111,7 +113,6 @@ class TTSProcessor:
             if speaker in ["Maestro", "Key learning points", "Lesson Summary"]:
                 speaker_id = maestro_config["voice_id"]
             else:
-                # Find the matching character in the configuration
                 for char_key, char_info in characters.items():
                     if char_info["name"] == speaker:
                         speaker_id = char_info["voice_id"]
@@ -129,5 +130,20 @@ class TTSProcessor:
             print(f"Synthesizing line {idx} for '{speaker}' using voice '{speaker_id}'...")
             self.synthesize_speech(text, speaker_id, mp3_path)
             self.convert_mp3_to_wav(mp3_path, wav_path)
+            
+            if not local_storage:
+                s3_key_mp3 = f"outputs/{os.path.basename(output_dir)}/line_{idx}.mp3"
+                s3_key_wav = f"outputs/{os.path.basename(output_dir)}/line_{idx}.wav"
+                upload_to_s3(mp3_path, config.S3_BUCKET_NAME, s3_key_mp3)
+                upload_to_s3(wav_path, config.S3_BUCKET_NAME, s3_key_wav)
         
         self.combine_audio_files(output_dir, final_audio_file)
+        
+        if not local_storage:
+            s3_key_final = f"outputs/{os.path.basename(output_dir)}/final_conversation.wav"
+            upload_to_s3(final_audio_file, config.S3_BUCKET_NAME, s3_key_final)
+            
+            # Delete local files after final upload
+            for file_name in os.listdir(output_dir):
+                file_path = os.path.join(output_dir, file_name)
+                os.remove(file_path)

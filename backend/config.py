@@ -21,7 +21,8 @@ TTS_MODEL_ID = "eleven_flash_v2_5"
 GENERATED_OUTPUT_DIR = "./data/conversations"
 PAUSE_DURATION_MS = 800
 
-
+S3_BUCKET_NAME = "hyperlang-prod-media-55858"
+USE_LOCAL_STORAGE = False 
 
 CHARACTER_CONFIG = {
     "maestro": {

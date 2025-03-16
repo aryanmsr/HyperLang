@@ -23,6 +23,7 @@ class TranscriptRequest(BaseModel):
     scenario: str
     country_name: str = "Colombia"
     language: str = "Spanish"
+    local_storage: bool = config.USE_LOCAL_STORAGE 
 
 class TranscriptResponse(BaseModel):
     """Response model containing the formatted transcript lines"""
@@ -103,7 +104,8 @@ async def generate_audio_endpoint(request: TranscriptRequest):
     result = run_pipeline(
         scenario=request.scenario,
         country_name=request.country_name,
-        language=request.language
+        language=request.language,
+        local_storage=request.local_storage  
     )
     
     return {

@@ -48,7 +48,8 @@ def test_generate_explained_transcript():
     payload = {
         "scenario": "A tourist asks for directions to the nearest café",
         "country_name": "Colombia",
-        "language": "Spanish"
+        "language": "Spanish",
+        "local_storage": False 
     }
     
     print("\nTesting Spanish (Colombia) scenario...")
@@ -69,7 +70,8 @@ def test_generate_explained_transcript():
     payload = {
         "scenario": "Ordering breakfast at a local boulangerie",
         "country_name": "France",
-        "language": "French"
+        "language": "French",
+        "local_storage": False 
     }
     
     print("\nTesting French (France) scenario...")
@@ -116,7 +118,8 @@ def test_generate_audio():
     payload = {
         "scenario": "Ordering coffee at a local café",
         "country_name": "Colombia",
-        "language": "Spanish"
+        "language": "Spanish",
+        "local_storage": False  # Change to True if you want to store locally
     }
     
     print("\nGenerating audio for Spanish (Colombia) scenario...")

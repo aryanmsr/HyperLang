@@ -4,36 +4,18 @@ from backend import config
 from backend.modelClasses import PromptHandler, LLMWrapper, TeacherAgent
 from backend.tts import TTSProcessor
 from backend.utils import reformat_transcript_to_list
+from backend.utils import reformat_transcript_to_list, upload_to_s3, download_from_s3
 
-def load_scenario(scenario_file_path: str) -> str:
-    """
-    Load scenario details from a file.
-    
-    Args:
-        scenario_file_path (str): Path to the scenario file.
-    
-    Returns:
-        str: The scenario text.
-    """
-    with open(scenario_file_path, "r", encoding="utf-8") as file:
+def load_scenario(scenario_name: str) -> str:
+    local_path = f"./backend/prompts/scenarios/{scenario_name}.txt"
+    if not config.USE_LOCAL_STORAGE:
+        print(f"Pulling in scenario from {s3_key}")
+        s3_key = f"scenarios/{scenario_name}/{scenario_name}.txt"
+        download_from_s3(config.S3_BUCKET_NAME, s3_key, local_path)
+    with open(local_path, "r", encoding="utf-8") as file:
         return file.read()
 
-def run_pipeline(scenario: str, country_name: str = "Colombia", language: str = "Spanish") -> dict:
-    """
-    Given a scenario, country name, and language, generate a transcript using the system prompt,
-    then process it into audio and save all outputs in a unique conversation folder.
-    
-    The system prompt template is formatted with {scenario}, {country_name}, {language}, and character names.
-    The resulting transcript is then reformatted into a list of lines before passing to the TTS module.
-    
-    Args:
-        scenario (str): The scenario text.
-        country_name (str): The country name used in prompt formatting.
-        language (str): The target language for the conversation.
-    
-    Returns:
-        dict: Details of the generated conversation outputs.
-    """
+def run_pipeline(scenario: str, country_name: str = "Colombia", language: str = "Spanish", local_storage=config.USE_LOCAL_STORAGE) -> dict:
     unique_id = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     conversation_dir = os.path.join(config.GENERATED_OUTPUT_DIR, unique_id)
     os.makedirs(conversation_dir, exist_ok=True)
@@ -97,13 +79,15 @@ def run_pipeline(scenario: str, country_name: str = "Colombia", language: str = 
         final_audio_file=final_audio_file,
         language=language,
         country=country_name,
-        characters=characters  # Pass character config to TTS processor
+        characters=characters,  # Pass character config to TTS processor
+        local_storage=local_storage  # Pass the storage option
     )
+    
     return {
         "conversation_id": unique_id,
-        "conversation_dir": conversation_dir,
-        "transcript_file": transcript_file,
-        "final_audio_file": final_audio_file,
+        "conversation_dir": conversation_dir if local_storage else f"s3://{config.S3_BUCKET_NAME}/outputs/{unique_id}",
+        "transcript_file": transcript_file if local_storage else f"s3://{config.S3_BUCKET_NAME}/outputs/{unique_id}/transcript.txt",
+        "final_audio_file": final_audio_file if local_storage else f"s3://{config.S3_BUCKET_NAME}/outputs/{unique_id}/final_conversation.wav",
     }
 
 if __name__ == "__main__":
